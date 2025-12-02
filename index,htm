@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lawrence Okeyo - ICT Professional</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Lawrence Okeyo</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Hello, I'm <span class="highlight">Lawrence Okeyo</span></h2>
+            <h3>ICT Professional with 2+ Years Experience</h3>
+            <p>Specializing in IT solutions, system administration, and technical support</p>
+            <a href="#contact" class="btn">Get In Touch</a>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Professional Summary</h3>
+                    <p>Dedicated ICT professional with over 2 years of hands-on experience in information and communication technology. Proven ability to troubleshoot, maintain, and optimize IT systems while providing exceptional technical support.</p>
+                    
+                    <div class="experience">
+                        <h4><i class="fas fa-briefcase"></i> Professional Experience</h4>
+                        <ul>
+                            <li><strong>2+ Years</strong> in ICT roles</li>
+                            <li>System administration and maintenance</li>
+                            <li>Technical support and troubleshooting</li>
+                            <li>Network management and security</li>
+                            <li>Hardware and software installation</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Professional Photo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <i class="fas fa-network-wired"></i>
+                    <h3>Networking</h3>
+                    <p>LAN/WAN setup, troubleshooting, and maintenance</p>
+                </div>
+                <div class="skill-item">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Technical Support</h3>
+                    <p>Hardware/software troubleshooting and user support</p>
+                </div>
+                <div class="skill-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>IT Security</h3>
+                    <p>Basic security protocols and system protection</p>
+                </div>
+                <div class="skill-item">
+                    <i class="fas fa-database"></i>
+                    <h3>System Administration</h3>
+                    <p>Server maintenance and system optimization</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Me</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>lawrence@example.com</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <p>+254 XXX XXX XXX</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Nairobi, Kenya</p>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Lawrence Okeyo. All rights reserved.</p>
+        <p>ICT Professional | 2+ Years Experience</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
