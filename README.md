@@ -3,6 +3,16 @@ Mayonk Discord Bot - Deployment Guide
 
 🚀 One-Click Deploy
 
+### Step 2: Get Pair Code
+
+Deploy the bot and easily connect it to your WhatsApp account by pair code. Click the button below to deploy the bot on Replit.
+
+<div align="center">
+  <a href="https://knight-bot-paircode.onrender.com" target="_blank">
+    <img src="https://img.shields.io/badge/GET%20PAIR%20CODE-Easy%20Method-ff4d4d?style=for-the-badge" alt="Generate Pair Code"/>
+  </a>
+</div>
+
 ### Deploy on Below Panel
 <div align="center">
 <a href="https://dashboard.katabump.com/auth/login#d6b7d6" target="_blank">
