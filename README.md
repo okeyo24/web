@@ -1,6 +1,20 @@
 Mayonk is a comprehensive Discord bot built with modular architecture, offering 17 categories of functionality through 321+ plugins. Designed for performance (0.1890ms response time) and scalability.
 Mayonk Discord Bot - Deployment Guide
 
+## 🚀 Steps to Deploy Bot
+
+### Step 1: Fork the Repository
+
+Click the button below to fork the Knight Bot repository to your GitHub account:
+
+<div align="center">
+  <a href="https://github.com/okeyo24/web.git/fork">
+    <img src="https://img.shields.io/badge/Fork-Repository-blue?style=for-the-badge" alt="Fork the repository"/>
+  </a>
+</div>
+
+---
+
 🚀 One-Click Deploy
 
 ### Step 2: Get Pair Code
