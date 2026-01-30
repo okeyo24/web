@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  mayonk:
+    image: laurie/mayonk:latest
+    container_name: mayonk-bot
+    restart: unless-stopped
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - MONGO_URI=mongodb://mongodb:27017/mayonk
+      - REDIS_URL=redis://redis:6379
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - mayonk-network
+    volumes:
+      - mayonk-logs:/app/logs
+      - mayonk-data:/app/data
+    healthcheck:
+      test: ["CMD", "node", "/app/healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mongodb:
+    image: mongo:latest
+    container_name: mayonk-mongodb
+    restart: unless-stopped
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mayonk-network
+    command: mongod --quiet --logpath /dev/null
+
+  redis:
+    image: redis:alpine
+    container_name: mayonk-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - mayonk-network
+
+networks:
+  mayonk-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  redis_data:
+  mayonk-logs:
+  mayonk-data:
