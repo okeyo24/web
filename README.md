@@ -5,7 +5,7 @@ Mayonk Discord Bot - Deployment Guide
 
 ### Step 1: Fork the Repository
 
-Click the button below to fork the Knight Bot repository to your GitHub account:
+Click the button below to fork the Mayonk Bot repository to your GitHub account:
 
 <div align="center">
   <a href="https://github.com/okeyo24/web.git/fork">
