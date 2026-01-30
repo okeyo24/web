@@ -1,0 +1,21 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/mayonk-bot', '.']
+  
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/mayonk-bot']
+  
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - 'run'
+  - 'deploy'
+  - 'mayonk-bot'
+  - '--image'
+  - 'gcr.io/$PROJECT_ID/mayonk-bot'
+  - '--region'
+  - 'us-central1'
+  - '--platform'
+  - 'managed'
+  - '--memory'
+  - '512Mi'
