@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <InstanceName>Mayonk Discord Bot</InstanceName>
+  <InstanceImage>NodeJS</InstanceImage>
+  <IPBinding>0.0.0.0</IPBinding>
+  <Port>3000</Port>
+  <StartupCommand>node src/index.js</StartupCommand>
+  <RunAsUser>container</RunAsUser>
+  <Autostart>True</Autostart>
+  <RestartOnCrash>True</RestartOnCrash>
+  <CrashRestartDelay>10</CrashRestartDelay>
+  <Module>Generic</Module>
+  <Application>
+    <Name>Mayonk Bot</Name>
+    <Version>1.8.7</Version>
+    <Description>Feature-rich Discord bot with 321+ plugins</Description>
+    <Categories>
+      <string>Discord</string>
+      <string>Bot</string>
+      <string>NodeJS</string>
+    </Categories>
+    <EnvironmentVariables>
+      <Variable>
+        <Key>DISCORD_TOKEN</Key>
+        <Value></Value>
+        <Description>Discord Bot Token</Description>
+        <IsRequired>True</IsRequired>
+      </Variable>
+      <Variable>
+        <Key>PREFIX</Key>
+        <Value>.</Value>
+        <Description>Command Prefix</Description>
+        <IsRequired>True</IsRequired>
+      </Variable>
+    </EnvironmentVariables>
+    <PostInstallCommands>
+      <string>npm install --production</string>
+      <string>mkdir -p logs data</string>
+    </PostInstallCommands>
+  </Application>
+</Config>
