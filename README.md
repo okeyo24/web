@@ -105,12 +105,6 @@ For further customization and setup guidance, click the button below:
 </a>
 </div>
 
-## 📁 Session Setup
-
-After receiving your credentials file:
-
-```bash
-Upload creds.json into the /session folder
 📜 License
 MIT License
 Copyright (c) 2024 Laurie
@@ -120,6 +114,8 @@ in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+
 👑 Author
 Laurie
+
 Built with ❤️ for the community
