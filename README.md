@@ -1,7 +1,7 @@
 # 🤖 Mayonk Discord Bot
 
 <p align="center">
-  <img src="https://i.imgur.com/8Km9tLL.png" alt="Mayonk Bot" width="280"/>
+  <img src="YOUR_UPLOADED_IMAGE_URL_HERE" alt="Mayonk Bot" width="280"/>
 </p>
 
 <p align="center">
