@@ -1,0 +1,387 @@
+# ============================================
+# Mayonk Discord Bot - .gitignore
+# ============================================
+
+# 🎯 Environment & Configuration Files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+config.json
+secrets.json
+credentials.json
+firebase.json
+serviceAccountKey.json
+*.pem
+*.key
+*.crt
+*.pfx
+*.p12
+
+# 🔑 API Keys & Tokens
+*-key.json
+*-token.json
+*-secret.json
+*-credentials.json
+
+# 📁 Node.js Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+npm-shrinkwrap.json
+
+# 📊 Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+.DS_Store
+Thumbs.db
+
+# 🗄️ Database Files
+*.db
+*.sqlite
+*.sqlite3
+*.mdb
+*.accdb
+mongod.log
+redis-data/
+data/
+*.rdb
+*.aof
+
+# 🎵 Media & Cache
+cache/
+temp/
+tmp/
+*.mp3
+*.mp4
+*.wav
+*.ogg
+*.flac
+*.webm
+*.m4a
+thumbnails/
+downloads/
+
+# 📝 User Data & Settings
+userdata/
+settings/
+guild_settings/
+user_settings/
+*.json !package.json
+!package-lock.json
+
+# 🔧 Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# 🐳 Docker & Containerization
+.dockerignore
+Dockerfile
+docker-compose.yml
+docker-compose.*.yml
+.env.docker
+.vscode/settings.json
+.vscode/launch.json
+
+# 🛠️ Build Output
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.vuepress/dist/
+.history/
+.release/
+
+# 📚 Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+.nyc_output
+
+# 📦 Package Managers
+node_modules/
+jspm_packages/
+
+# 🧪 Testing
+.nyc_output
+coverage/
+test-results/
+*.trx
+*.coverage
+*.code-workspace
+
+# 🚀 Deployment
+.elasticbeanstalk/
+.ebextensions/
+.ebignore
+.elasticbeanstalk/config.yml
+.serverless/
+.functions/
+.webpack/
+.vercel/
+.netlify/
+.render.yaml
+Procfile
+
+# 🖥️ OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# 📁 IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# 🔍 Debug
+debug.log
+debug/
+*.log.debug
+*.debug.log
+
+# 📊 Analytics & Metrics
+analytics/
+metrics/
+stats/
+reports/
+*.report
+*.stats
+
+# 🎨 Assets (Optional - exclude if you want to track assets)
+assets/cache/
+assets/temp/
+assets/downloads/
+
+# 🧹 Temporary Files
+*.tmp
+*.temp
+*.bk
+*.backup
+*.old
+*.orig
+*.rej
+
+# 🔐 SSL Certificates
+ssl/
+certificates/
+*.cer
+*.csr
+*.der
+*.p7b
+*.p7c
+*.p7s
+*.spc
+*.crl
+
+# 🗺️ Map Files
+*.map
+*.map.json
+source-map.json
+
+# 📦 TypeScript & Babel
+*.tsbuildinfo
+*.tsc-cache
+*.babel-cache
+.eslintcache
+
+# 📚 Documentation
+docs/_site/
+docs/.vuepress/dist/
+_site/
+site/
+
+# 🧪 Test Snapshots
+__snapshots__/
+*.snap
+
+# 🎯 Custom Mayonk Bot Files
+# ============================================
+
+# Bot-specific files
+data/                 # User and guild data
+logs/                 # Log files
+transcripts/          # Ticket transcripts
+ticket_attachments/   # Ticket attachments
+music_cache/          # Cached music files
+temp_downloads/       # Temporary downloads
+
+# Database backups
+backups/
+*.backup
+*.dump
+*.bak
+
+# Uploaded files
+uploads/
+user_uploads/
+guild_uploads/
+
+# Plugin-specific
+plugins/cache/
+plugins/temp/
+plugins/downloads/
+
+# Session files
+sessions/
+*.session
+
+# Queue files
+queue/
+*.queue
+
+# Error dumps
+error_dumps/
+crash_reports/
+*.dmp
+*.core
+
+# Temporary command files
+command_cache/
+*.cmd.tmp
+
+# API cache
+api_cache/
+*.api.cache
+
+# ============================================
+# Platform Specific
+# ============================================
+
+# Windows
+[Ww]in*
+*.exe
+*.dll
+*.obj
+*.lib
+*.msi
+*.msm
+*.msp
+*.spl
+*.scr
+*.sys
+*.drv
+*.vxd
+*.386
+*.com
+*.bat
+*.cmd
+*.ps1
+*.reg
+*.inf
+*.ini
+*.pif
+*.lnk
+*.url
+*.cab
+*.chm
+*.hlp
+*.cpl
+*.ocx
+*.ax
+*.manifest
+*.csc
+*.resources
+*.resx
+*.resources.dll
+*.manifest.resources
+
+# Linux/Unix
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# macOS
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# ============================================
+# Project Specific Exceptions
+# ============================================
+
+# Keep these files (negation patterns)
+!package.json
+!README.md
+!LICENSE
+!.github/
+!.github/workflows/
+!.github/ISSUE_TEMPLATE/
+!.github/PULL_REQUEST_TEMPLATE.md
+
+# Example configs (should be committed)
+config.example.json
+.env.example
+docker-compose.example.yml
+
+# Documentation
+docs/                  # Keep documentation directory
+!.gitkeep              # Keep .gitkeep files if present
+
+# ============================================
+# Notes for Contributors
+# ============================================
+#
+# Files to NEVER commit:
+# 1. Environment variables (.env files)
+# 2. API keys and tokens
+# 3. Database files with user data
+# 4. Log files
+# 5. Node modules
+# 6. Build artifacts
+# 7. OS-specific files
+#
+# Files to ALWAYS commit:
+# 1. package.json
+# 2. README.md
+# 3. LICENSE
+# 4. Source code
+# 5. Example configuration files
+# 6. Documentation
+#
+# ============================================
