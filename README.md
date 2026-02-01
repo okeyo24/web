@@ -67,11 +67,14 @@ Designed with **17+ categories** and **321+ plugins**, Mayonk delivers advanced 
 
 ---
 
-## Step 2: Get Pair Code (Easy Method)
+## 🔐 Get Pair Code
+
+### Step 1: Generate Pair Code
+Click below to get your WhatsApp pair code:
 
 <div align="center">
-  <a href="https://github.com/okeyo24/web.git-paircode.onrender.com" target="_blank">
-    <img src="https://img.shields.io/badge/GET%20PAIR%20CODE-Easy%20Method-ff4d4d?style=for-the-badge"/>
+  <a href="https://replit.com/@okeyo24/Mayonk-Pair-Code" target="_blank">
+    <img src="https://img.shields.io/badge/Generate_Pair_Code-FF4D4D?style=for-the-badge&logo=whatsapp&logoColor=white" alt="Generate Pair Code"/>
   </a>
 </div>
 
