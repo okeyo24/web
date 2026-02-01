@@ -77,9 +77,49 @@ Designed with **17+ categories** and **321+ plugins**, Mayonk delivers advanced 
 
 ---
 
+### Step 3: Deploy Now
+
+For further customization and setup guidance, click the button below:
+
+<div align="center">
+  <a href="https://youtu.be/-oz_u1iMgf8">
+    <img src="https://img.shields.io/badge/Deploy Tutorial-dc3545?style=for-the-badge&logo=youtube" alt="YouTube Link"/>
+  </a>
+  <a href="https://bot-hosting.net/?aff=1068419752923508776">
+    <img src="https://img.shields.io/badge/Deploy on Panel-28a745?style=for-the-badge" alt="Deploy on Panel"/>
+  </a>
+</div>
+
+### Deploy on VPS
+
+<div align="center">
+  <a href="https://client.petrosky.io/aff.php?aff=394" target="_blank">
+    <img src="https://img.shields.io/badge/petrosky vps-0078E7?style=for-the-badge" alt="petrosky vps"/>
+  </a>
+</div>
+
+### Deploy on Below Panel
+<div align="center">
+<a href="https://dashboard.katabump.com/auth/login#d6b7d6" target="_blank">
+  <img src="https://img.shields.io/badge/Katabump-D6B7D6?style=for-the-badge&logo=server&logoColor=black" alt="Katabump"/>
+</a>
+</div>
+
 ## 📁 Session Setup
 
 After receiving your credentials file:
 
 ```bash
 Upload creds.json into the /session folder
+📜 License
+MIT License
+Copyright (c) 2024 Laurie
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+👑 Author
+Laurie
+Built with ❤️ for the community
