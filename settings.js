@@ -1,499 +1,652 @@
-/**
- * Mayonk Bot Configuration
- * Version: 1.8.7
- * Owner: Laurie
- * 
- * This is the main configuration file for Mayonk Discord Bot.
- * All settings are centralized here for easy management.
- */
+// ============================================
+// Mayonk Bot - Settings & Configuration Module
+// ============================================
 
-require('dotenv').config();
+const fs = require('fs');
 const path = require('path');
 
-const config = {
-  // =============================================
-  // BOT CORE CONFIGURATION
-  // =============================================
-  bot: {
-    // Basic Information
-    name: process.env.BOT_NAME || "Mayonk",
-    version: "1.8.7",
-    prefix: process.env.BOT_PREFIX || ".",
-    status: process.env.BOT_STATUS || "online",
-    
-    // Owner Information
-    owner: {
-      name: process.env.BOT_OWNER_NAME || "Laurie",
-      id: process.env.BOT_OWNER_ID || "",
-      username: process.env.BOT_OWNER_USERNAME || ""
-    },
-    
-    // Activity Settings
-    activity: {
-      type: process.env.BOT_ACTIVITY_TYPE || "PLAYING",
-      name: process.env.BOT_ACTIVITY_NAME || "with 321 plugins",
-      url: process.env.BOT_ACTIVITY_URL || ""
-    },
-    
-    // Colors for Embeds
-    colors: {
-      primary: "#5865F2",    // Discord Blurple
-      success: "#57F287",    // Discord Green
-      warning: "#FEE75C",    // Discord Yellow
-      error: "#ED4245",      // Discord Red
-      info: "#5865F2"        // Discord Blurple
-    },
-    
-    // Performance
-    responseTime: 0.1890, // ms
-    plugins: 321,
-    maxMemory: 62 * 1024, // MB
-    currentMemory: 107    // MB
-  },
-
-  // =============================================
-  // DISCORD CLIENT SETTINGS
-  // =============================================
-  discord: {
-    token: process.env.DISCORD_TOKEN,
-    clientId: process.env.DISCORD_CLIENT_ID,
-    guildId: process.env.DISCORD_GUILD_ID, // For development
-    
-    // Intents (All intents for full functionality)
-    intents: [
-      "Guilds",
-      "GuildMembers",
-      "GuildMessages",
-      "MessageContent",
-      "GuildMessageReactions",
-      "GuildVoiceStates",
-      "DirectMessages",
-      "GuildPresences",
-      "GuildMessageTyping",
-      "DirectMessageReactions",
-      "DirectMessageTyping"
-    ],
-    
-    partials: [
-      "Channel",
-      "Message",
-      "User",
-      "Reaction",
-      "GuildMember"
-    ],
-    
-    // Sharding
-    sharding: {
-      enabled: process.env.SHARDING_ENABLED === "true" || false,
-      totalShards: "auto"
+class SettingsManager {
+    constructor(client) {
+        this.client = client;
+        this.settingsDir = './data/settings';
+        this.defaultSettings = this.getDefaultSettings();
+        
+        // Ensure settings directory exists
+        if (!fs.existsSync(this.settingsDir)) {
+            fs.mkdirSync(this.settingsDir, { recursive: true });
+        }
     }
-  },
-
-  // =============================================
-  // DATABASE CONFIGURATION
-  // =============================================
-  database: {
-    // MongoDB (Primary Database)
-    mongo: {
-      enabled: process.env.MONGO_ENABLED !== "false",
-      uri: process.env.MONGODB_URI || "mongodb://localhost:27017/mayonk",
-      options: {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        maxPoolSize: 10,
-        serverSelectionTimeoutMS: 5000,
-        socketTimeoutMS: 45000,
-      }
-    },
     
-    // Redis (Caching)
-    redis: {
-      enabled: process.env.REDIS_ENABLED === "true" || true,
-      uri: process.env.REDIS_URI || "redis://localhost:6379",
-      password: process.env.REDIS_PASSWORD || null,
-      db: 0
-    },
-    
-    // SQLite (Local Storage)
-    sqlite: {
-      enabled: process.env.SQLITE_ENABLED === "true" || false,
-      path: path.join(__dirname, '../data/database.sqlite')
+    // ============================================
+    // Default Settings
+    // ============================================
+    getDefaultSettings() {
+        return {
+            // Bot Global Settings
+            bot: {
+                prefix: '!',
+                language: 'en',
+                logChannel: null,
+                logLevel: 'info', // debug, info, warn, error
+                timezone: 'UTC',
+                embedColor: '#5865F2',
+                autoUpdate: true
+            },
+            
+            // Guild/Server Settings
+            guild: {
+                prefix: null, // Overrides global prefix if set
+                language: 'en',
+                autoMod: {
+                    enabled: false,
+                    antiSpam: true,
+                    antiInvite: false,
+                    antiMassMention: true,
+                    maxWarns: 5,
+                    warnAction: 'mute', // mute, kick, ban, none
+                    ignoredChannels: [],
+                    ignoredRoles: []
+                },
+                moderation: {
+                    modLogChannel: null,
+                    modRole: null,
+                    adminRole: null,
+                    muteRole: null,
+                    warnThreshold: 3,
+                    deleteCommands: true
+                },
+                welcome: {
+                    enabled: false,
+                    channel: null,
+                    message: 'Welcome {user} to {server}!',
+                    embed: true,
+                    dmWelcome: false,
+                    dmMessage: 'Welcome to {server}!',
+                    assignRole: null,
+                    embedColor: '#5865F2'
+                },
+                goodbye: {
+                    enabled: false,
+                    channel: null,
+                    message: '{user} has left the server.',
+                    embed: true,
+                    embedColor: '#ED4245'
+                },
+                logging: {
+                    enabled: false,
+                    channel: null,
+                    events: {
+                        messageDelete: true,
+                        messageEdit: true,
+                        memberJoin: true,
+                        memberLeave: true,
+                        memberBan: true,
+                        memberUnban: true,
+                        memberUpdate: true,
+                        channelCreate: true,
+                        channelDelete: true,
+                        roleCreate: true,
+                        roleDelete: true
+                    }
+                },
+                economy: {
+                    enabled: false,
+                    currency: '🪙',
+                    currencyName: 'coins',
+                    startingBalance: 100,
+                    dailyAmount: 50,
+                    workCooldown: 3600000, // 1 hour
+                    gamblingEnabled: true
+                },
+                music: {
+                    enabled: true,
+                    defaultVolume: 50,
+                    maxQueueSize: 50,
+                    djRole: null,
+                    allowSkipVote: true,
+                    voteSkipRatio: 0.5, // 50% of listeners needed
+                    leaveOnEmpty: true,
+                    leaveTimeout: 300000 // 5 minutes
+                },
+                reactionRoles: {
+                    enabled: false,
+                    messages: {}
+                },
+                tickets: {
+                    enabled: false,
+                    category: null,
+                    supportRoles: [],
+                    logChannel: null,
+                    ticketMessage: 'Thank you for creating a ticket! Support will be with you shortly.'
+                },
+                suggestions: {
+                    enabled: false,
+                    channel: null,
+                    requireApproval: false,
+                    approvalRole: null
+                },
+                starboard: {
+                    enabled: false,
+                    channel: null,
+                    threshold: 3,
+                    emoji: '⭐',
+                    selfStar: false
+                },
+                automations: {
+                    autoRoles: [],
+                    leveling: {
+                        enabled: false,
+                        channel: null,
+                        xpRate: 5,
+                        xpCooldown: 60000, // 1 minute
+                        levelRoles: {}
+                    },
+                    timedMessages: []
+                },
+                customCommands: {},
+                ignoredChannels: [],
+                disabledCommands: []
+            },
+            
+            // User Settings
+            user: {
+                language: null, // Overrides guild language
+                leveling: {
+                    xp: 0,
+                    level: 1,
+                    totalXp: 0
+                },
+                economy: {
+                    balance: 100,
+                    bank: 0,
+                    dailyStreak: 0,
+                    lastDaily: null,
+                    lastWork: null
+                },
+                preferences: {
+                    dmNotifications: true,
+                    commandNotifications: true,
+                    embedStyle: 'default',
+                    timezone: 'UTC',
+                    privacyMode: false
+                },
+                statistics: {
+                    commandsUsed: 0,
+                    messagesSent: 0,
+                    joinedAt: new Date().toISOString()
+                }
+            }
+        };
     }
-  },
-
-  // =============================================
-  // API KEYS & EXTERNAL SERVICES
-  // =============================================
-  api: {
-    // AI Services
-    openai: {
-      key: process.env.OPENAI_API_KEY,
-      organization: process.env.OPENAI_ORG_ID,
-      model: process.env.OPENAI_MODEL || "gpt-4-turbo-preview",
-      maxTokens: parseInt(process.env.OPENAI_MAX_TOKENS) || 2000,
-      temperature: parseFloat(process.env.OPENAI_TEMPERATURE) || 0.7
-    },
     
-    google: {
-      gemini: process.env.GEMINI_API_KEY,
-      youtube: process.env.YOUTUBE_API_KEY
-    },
+    // ============================================
+    // Guild Settings Methods
+    // ============================================
     
-    // Image Processing
-    stabilityai: process.env.STABILITYAI_API_KEY,
-    deepai: process.env.DEEPAI_API_KEY,
-    remini: process.env.REMINI_API_KEY,
-    
-    // Other Services
-    weather: process.env.WEATHER_API_KEY,
-    imdb: process.env.IMDB_API_KEY,
-    spotify: {
-      clientId: process.env.SPOTIFY_CLIENT_ID,
-      clientSecret: process.env.SPOTIFY_CLIENT_SECRET
-    },
-    
-    // Sports
-    footballData: process.env.FOOTBALL_DATA_API_KEY
-  },
-
-  // =============================================
-  // FEATURE TOGGLES
-  // =============================================
-  features: {
-    // AI Features
-    ai: {
-      enabled: process.env.FEATURE_AI !== "false",
-      chat: process.env.FEATURE_AI_CHAT !== "false",
-      imageGeneration: process.env.FEATURE_AI_IMAGE === "true",
-      translation: process.env.FEATURE_AI_TRANSLATE !== "false"
-    },
-    
-    // Media Features
-    media: {
-      downloads: process.env.FEATURE_DOWNLOADS !== "false",
-      imageProcessing: process.env.FEATURE_IMAGE_PROCESSING !== "false",
-      audioProcessing: process.env.FEATURE_AUDIO_PROCESSING !== "false"
-    },
-    
-    // Utility Features
-    utility: {
-      moderation: process.env.FEATURE_MODERATION !== "false",
-      tools: process.env.FEATURE_TOOLS !== "false",
-      games: process.env.FEATURE_GAMES !== "false",
-      sports: process.env.FEATURE_SPORTS === "true"
-    },
-    
-    // Group Features
-    group: {
-      welcomeMessages: process.env.FEATURE_WELCOME !== "false",
-      autoModeration: process.env.FEATURE_AUTO_MOD === "true"
+    /**
+     * Get guild settings
+     * @param {string} guildId - Discord guild ID
+     * @returns {Object} Guild settings
+     */
+    getGuildSettings(guildId) {
+        const filePath = path.join(this.settingsDir, `guild_${guildId}.json`);
+        
+        try {
+            if (fs.existsSync(filePath)) {
+                const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+                return { ...this.defaultSettings.guild, ...data };
+            }
+        } catch (error) {
+            console.error(`Error reading guild settings for ${guildId}:`, error);
+        }
+        
+        // Return default settings for new guilds
+        const defaultSettings = this.defaultSettings.guild;
+        this.setGuildSettings(guildId, defaultSettings);
+        return defaultSettings;
     }
-  },
-
-  // =============================================
-  // PLUGIN SYSTEM
-  // =============================================
-  plugins: {
-    total: 321,
-    enabledByDefault: true,
     
-    // Plugin Categories
-    categories: {
-      ai: ["gpt", "gemini", "deepseek", "llama", "dalle"],
-      audio: ["bass", "deep", "robot", "earrape", "tomp3"],
-      download: ["youtube", "tiktok", "instagram", "facebook"],
-      image: ["remini", "ephoto360", "wallpaper"],
-      group: ["antilink", "welcome", "kick", "ban", "poll"],
-      tools: ["qrcode", "translate", "calculator", "weather"],
-      games: ["truth", "dare", "trivia"],
-      fun: ["jokes", "memes", "quotes", "facts"]
+    /**
+     * Set guild settings
+     * @param {string} guildId - Discord guild ID
+     * @param {Object} settings - New settings object
+     */
+    setGuildSettings(guildId, settings) {
+        const filePath = path.join(this.settingsDir, `guild_${guildId}.json`);
+        const mergedSettings = { ...this.defaultSettings.guild, ...settings };
+        
+        try {
+            fs.writeFileSync(filePath, JSON.stringify(mergedSettings, null, 2));
+        } catch (error) {
+            console.error(`Error saving guild settings for ${guildId}:`, error);
+        }
     }
-  },
-
-  // =============================================
-  // SECURITY CONFIGURATION
-  // =============================================
-  security: {
-    // Bot Owners
-    owners: (process.env.BOT_OWNERS || "").split(",").filter(Boolean),
     
-    // Rate Limiting
-    rateLimiting: {
-      enabled: process.env.RATE_LIMIT_ENABLED !== "false",
-      windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 60000,
-      max: parseInt(process.env.RATE_LIMIT_MAX) || 30
-    },
-    
-    // Anti-Spam
-    antiSpam: {
-      enabled: process.env.ANTI_SPAM_ENABLED !== "false",
-      threshold: parseInt(process.env.ANTI_SPAM_THRESHOLD) || 5,
-      interval: parseInt(process.env.ANTI_SPAM_INTERVAL) || 5000
-    },
-    
-    // Blacklist
-    blacklist: {
-      users: (process.env.BLACKLIST_USERS || "").split(",").filter(Boolean),
-      guilds: (process.env.BLACKLIST_GUILDS || "").split(",").filter(Boolean)
+    /**
+     * Update specific guild setting
+     * @param {string} guildId - Discord guild ID
+     * @param {string} key - Setting key (e.g., 'prefix', 'welcome.enabled')
+     * @param {any} value - New value
+     */
+    updateGuildSetting(guildId, key, value) {
+        const settings = this.getGuildSettings(guildId);
+        const keys = key.split('.');
+        let current = settings;
+        
+        // Navigate to the nested key
+        for (let i = 0; i < keys.length - 1; i++) {
+            if (!current[keys[i]]) {
+                current[keys[i]] = {};
+            }
+            current = current[keys[i]];
+        }
+        
+        // Set the value
+        current[keys[keys.length - 1]] = value;
+        this.setGuildSettings(guildId, settings);
+        
+        return this.getGuildSettings(guildId);
     }
-  },
-
-  // =============================================
-  // PERFORMANCE OPTIMIZATION
-  // =============================================
-  performance: {
-    // Caching
-    cache: {
-      enabled: process.env.CACHE_ENABLED !== "false",
-      ttl: parseInt(process.env.CACHE_TTL) || 3600,
-      maxSize: parseInt(process.env.CACHE_MAX_SIZE) || 1000
-    },
     
-    // Concurrency
-    concurrency: {
-      maxDownloads: parseInt(process.env.MAX_CONCURRENT_DOWNLOADS) || 3,
-      maxAiRequests: parseInt(process.env.MAX_CONCURRENT_AI_REQUESTS) || 5
-    },
-    
-    // Timeouts
-    timeouts: {
-      command: parseInt(process.env.COMMAND_TIMEOUT) || 30000,
-      download: parseInt(process.env.DOWNLOAD_TIMEOUT) || 60000,
-      api: parseInt(process.env.API_TIMEOUT) || 15000
+    /**
+     * Reset guild settings to default
+     * @param {string} guildId - Discord guild ID
+     */
+    resetGuildSettings(guildId) {
+        const defaultSettings = this.defaultSettings.guild;
+        this.setGuildSettings(guildId, defaultSettings);
+        return defaultSettings;
     }
-  },
-
-  // =============================================
-  // LOGGING CONFIGURATION
-  // =============================================
-  logging: {
-    // Console Logging
-    console: {
-      enabled: process.env.LOG_CONSOLE_ENABLED !== "false",
-      level: process.env.LOG_CONSOLE_LEVEL || "info",
-      timestamp: process.env.LOG_TIMESTAMP !== "false"
-    },
     
-    // File Logging
-    file: {
-      enabled: process.env.LOG_FILE_ENABLED === "true",
-      level: process.env.LOG_FILE_LEVEL || "debug",
-      directory: path.join(__dirname, '../logs'),
-      maxSize: parseInt(process.env.LOG_MAX_SIZE_MB) || 10
-    },
+    // ============================================
+    // User Settings Methods
+    // ============================================
     
-    // Discord Webhook Logging
-    discord: {
-      enabled: process.env.LOG_DISCORD_ENABLED === "true",
-      webhookUrl: process.env.LOG_DISCORD_WEBHOOK,
-      level: process.env.LOG_DISCORD_LEVEL || "error"
+    /**
+     * Get user settings
+     * @param {string} userId - Discord user ID
+     * @returns {Object} User settings
+     */
+    getUserSettings(userId) {
+        const filePath = path.join(this.settingsDir, `user_${userId}.json`);
+        
+        try {
+            if (fs.existsSync(filePath)) {
+                const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+                return { ...this.defaultSettings.user, ...data };
+            }
+        } catch (error) {
+            console.error(`Error reading user settings for ${userId}:`, error);
+        }
+        
+        // Return default settings for new users
+        const defaultSettings = this.defaultSettings.user;
+        this.setUserSettings(userId, defaultSettings);
+        return defaultSettings;
     }
-  },
-
-  // =============================================
-  // PATHS & DIRECTORIES
-  // =============================================
-  paths: {
-    root: __dirname,
-    base: path.join(__dirname, '..'),
     
-    // Source Directories
-    src: path.join(__dirname, '../src'),
-    commands: path.join(__dirname, '../commands'),
-    events: path.join(__dirname, '../events'),
-    plugins: path.join(__dirname, '../plugins'),
-    utils: path.join(__dirname, '../utils'),
+    /**
+     * Set user settings
+     * @param {string} userId - Discord user ID
+     * @param {Object} settings - New settings object
+     */
+    setUserSettings(userId, settings) {
+        const filePath = path.join(this.settingsDir, `user_${userId}.json`);
+        const mergedSettings = { ...this.defaultSettings.user, ...settings };
+        
+        try {
+            fs.writeFileSync(filePath, JSON.stringify(mergedSettings, null, 2));
+        } catch (error) {
+            console.error(`Error saving user settings for ${userId}:`, error);
+        }
+    }
     
-    // Data Directories
-    data: path.join(__dirname, '../data'),
-    temp: path.join(__dirname, '../temp'),
-    cache: path.join(__dirname, '../cache'),
-    logs: path.join(__dirname, '../logs')
-  },
-
-  // =============================================
-  // COMMAND CONFIGURATION
-  // =============================================
-  commands: {
-    // Command Categories
-    categories: {
-      ai: "🤖 AI",
-      audio: "🎵 Audio",
-      download: "📥 Download",
-      image: "🖼️ Image",
-      group: "👥 Group",
-      tools: "🛠️ Tools",
-      games: "🎮 Games",
-      fun: "😄 Fun",
-      sports: "⚽ Sports",
-      owner: "👑 Owner"
-    },
+    /**
+     * Update specific user setting
+     * @param {string} userId - Discord user ID
+     * @param {string} key - Setting key
+     * @param {any} value - New value
+     */
+    updateUserSetting(userId, key, value) {
+        const settings = this.getUserSettings(userId);
+        const keys = key.split('.');
+        let current = settings;
+        
+        for (let i = 0; i < keys.length - 1; i++) {
+            if (!current[keys[i]]) {
+                current[keys[i]] = {};
+            }
+            current = current[keys[i]];
+        }
+        
+        current[keys[keys.length - 1]] = value;
+        this.setUserSettings(userId, settings);
+        
+        return this.getUserSettings(userId);
+    }
     
-    // Cooldowns
-    cooldowns: {
-      enabled: true,
-      default: 3, // seconds
-      user: 5,
-      guild: 2
-    }
-  },
-
-  // =============================================
-  // MESSAGE CONFIGURATION
-  // =============================================
-  messages: {
-    // Default Messages
-    defaults: {
-      error: "❌ An error occurred. Please try again later.",
-      noPermission: "🚫 You don't have permission to use this command.",
-      commandDisabled: "🔒 This command is currently disabled.",
-      rateLimited: "⏳ You're being rate limited. Please wait a moment.",
-      maintenance: "🔧 The bot is currently under maintenance."
-    },
+    // ============================================
+    // Global Bot Settings
+    // ============================================
     
-    // Welcome Messages
-    welcome: {
-      enabled: process.env.WELCOME_MESSAGES !== "false",
-      message: "Welcome {user} to {server}! 🎉",
-      channel: "general"
+    /**
+     * Get global bot settings
+     * @returns {Object} Global settings
+     */
+    getGlobalSettings() {
+        const filePath = path.join(this.settingsDir, 'global.json');
+        
+        try {
+            if (fs.existsSync(filePath)) {
+                const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+                return { ...this.defaultSettings.bot, ...data };
+            }
+        } catch (error) {
+            console.error('Error reading global settings:', error);
+        }
+        
+        const defaultSettings = this.defaultSettings.bot;
+        this.setGlobalSettings(defaultSettings);
+        return defaultSettings;
     }
-  },
-
-  // =============================================
-  // ENVIRONMENT & DEPLOYMENT
-  // =============================================
-  environment: {
-    nodeEnv: process.env.NODE_ENV || "development",
-    isProduction: process.env.NODE_ENV === "production",
-    isDevelopment: process.env.NODE_ENV === "development",
-    isTesting: process.env.NODE_ENV === "test"
-  }
-};
-
-// =============================================
-// HELPER METHODS
-// =============================================
-
-/**
- * Validate configuration
- * @returns {Object} Validation result
- */
-config.validate = function() {
-  const errors = [];
-  const warnings = [];
-
-  // Check required environment variables
-  if (!this.discord.token) {
-    errors.push("DISCORD_TOKEN is required in environment variables");
-  }
-
-  if (!this.discord.clientId) {
-    warnings.push("DISCORD_CLIENT_ID is not set, some features may not work");
-  }
-
-  // Check database connections
-  if (this.database.mongo.enabled && !this.database.mongo.uri) {
-    warnings.push("MongoDB URI not set, using default localhost");
-  }
-
-  // Check API keys for enabled features
-  if (this.features.ai.enabled && !this.api.openai.key && !this.api.google.gemini) {
-    warnings.push("AI features enabled but no AI API keys provided");
-  }
-
-  return {
-    valid: errors.length === 0,
-    errors,
-    warnings,
-    timestamp: new Date().toISOString()
-  };
-};
-
-/**
- * Get configuration for a specific module
- * @param {string} module - Module name
- * @returns {Object} Module configuration
- */
-config.getModuleConfig = function(module) {
-  const modules = {
-    ai: {
-      ...this.api.openai,
-      ...this.api.google,
-      ...this.features.ai
-    },
-    download: {
-      ...this.features.media,
-      ...this.performance.concurrency
-    },
-    moderation: {
-      ...this.security,
-      ...this.features.group
-    },
-    database: this.database,
-    logging: this.logging
-  };
-
-  return modules[module] || {};
-};
-
-/**
- * Apply environment-specific configuration
- */
-config.applyEnvironmentConfig = function() {
-  const env = this.environment.nodeEnv;
-  
-  const envConfigs = {
-    development: {
-      logging: {
-        console: { level: 'debug' },
-        file: { level: 'debug' }
-      },
-      performance: {
-        cache: { ttl: 300 } // 5 minutes in dev
-      }
-    },
-    production: {
-      logging: {
-        console: { level: 'info' },
-        file: { level: 'warn' }
-      },
-      performance: {
-        cache: { ttl: 3600 } // 1 hour in prod
-      },
-      security: {
-        rateLimiting: { max: 10 } // More strict in prod
-      }
-    },
-    test: {
-      logging: {
-        console: { enabled: false },
-        file: { enabled: false }
-      },
-      features: {
-        ai: { enabled: false },
-        media: { downloads: false }
-      }
+    
+    /**
+     * Set global bot settings
+     * @param {Object} settings - New global settings
+     */
+    setGlobalSettings(settings) {
+        const filePath = path.join(this.settingsDir, 'global.json');
+        const mergedSettings = { ...this.defaultSettings.bot, ...settings };
+        
+        try {
+            fs.writeFileSync(filePath, JSON.stringify(mergedSettings, null, 2));
+        } catch (error) {
+            console.error('Error saving global settings:', error);
+        }
     }
-  };
-
-  const envConfig = envConfigs[env] || {};
-  
-  // Deep merge configuration
-  const merge = (target, source) => {
-    for (const key in source) {
-      if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
-        if (!target[key]) target[key] = {};
-        merge(target[key], source[key]);
-      } else {
-        target[key] = source[key];
-      }
+    
+    /**
+     * Get effective prefix for a guild
+     * @param {string} guildId - Discord guild ID
+     * @returns {string} Prefix to use
+     */
+    getPrefix(guildId) {
+        if (!guildId) return this.getGlobalSettings().prefix;
+        
+        const guildSettings = this.getGuildSettings(guildId);
+        return guildSettings.prefix || this.getGlobalSettings().prefix;
     }
-  };
-  
-  merge(this, envConfig);
-};
+    
+    /**
+     * Set prefix for a guild
+     * @param {string} guildId - Discord guild ID
+     * @param {string} prefix - New prefix
+     */
+    setPrefix(guildId, prefix) {
+        return this.updateGuildSetting(guildId, 'prefix', prefix);
+    }
+    
+    // ============================================
+    // Command Permissions & Disabled Commands
+    // ============================================
+    
+    /**
+     * Check if command is disabled in a guild
+     * @param {string} guildId - Discord guild ID
+     * @param {string} commandName - Command name
+     * @returns {boolean} True if disabled
+     */
+    isCommandDisabled(guildId, commandName) {
+        if (!guildId) return false;
+        
+        const guildSettings = this.getGuildSettings(guildId);
+        return guildSettings.disabledCommands.includes(commandName);
+    }
+    
+    /**
+     * Disable a command in a guild
+     * @param {string} guildId - Discord guild ID
+     * @param {string} commandName - Command name
+     */
+    disableCommand(guildId, commandName) {
+        const guildSettings = this.getGuildSettings(guildId);
+        
+        if (!guildSettings.disabledCommands.includes(commandName)) {
+            guildSettings.disabledCommands.push(commandName);
+            this.setGuildSettings(guildId, guildSettings);
+        }
+    }
+    
+    /**
+     * Enable a command in a guild
+     * @param {string} guildId - Discord guild ID
+     * @param {string} commandName - Command name
+     */
+    enableCommand(guildId, commandName) {
+        const guildSettings = this.getGuildSettings(guildId);
+        guildSettings.disabledCommands = guildSettings.disabledCommands.filter(
+            cmd => cmd !== commandName
+        );
+        this.setGuildSettings(guildId, guildSettings);
+    }
+    
+    // ============================================
+    // Channel & Role Ignore Management
+    // ============================================
+    
+    /**
+     * Check if channel is ignored
+     * @param {string} guildId - Discord guild ID
+     * @param {string} channelId - Discord channel ID
+     * @returns {boolean} True if ignored
+     */
+    isChannelIgnored(guildId, channelId) {
+        const guildSettings = this.getGuildSettings(guildId);
+        return guildSettings.ignoredChannels.includes(channelId);
+    }
+    
+    /**
+     * Add channel to ignore list
+     * @param {string} guildId - Discord guild ID
+     * @param {string} channelId - Discord channel ID
+     */
+    ignoreChannel(guildId, channelId) {
+        const guildSettings = this.getGuildSettings(guildId);
+        
+        if (!guildSettings.ignoredChannels.includes(channelId)) {
+            guildSettings.ignoredChannels.push(channelId);
+            this.setGuildSettings(guildId, guildSettings);
+        }
+    }
+    
+    /**
+     * Remove channel from ignore list
+     * @param {string} guildId - Discord guild ID
+     * @param {string} channelId - Discord channel ID
+     */
+    unignoreChannel(guildId, channelId) {
+        const guildSettings = this.getGuildSettings(guildId);
+        guildSettings.ignoredChannels = guildSettings.ignoredChannels.filter(
+            id => id !== channelId
+        );
+        this.setGuildSettings(guildId, guildSettings);
+    }
+    
+    // ============================================
+    // Custom Commands Management
+    // ============================================
+    
+    /**
+     * Add custom command
+     * @param {string} guildId - Discord guild ID
+     * @param {string} trigger - Command trigger
+     * @param {string} response - Command response
+     * @param {string} type - Command type (text, embed)
+     */
+    addCustomCommand(guildId, trigger, response, type = 'text') {
+        const guildSettings = this.getGuildSettings(guildId);
+        guildSettings.customCommands[trigger] = {
+            response,
+            type,
+            created: Date.now(),
+            uses: 0
+        };
+        this.setGuildSettings(guildId, guildSettings);
+    }
+    
+    /**
+     * Remove custom command
+     * @param {string} guildId - Discord guild ID
+     * @param {string} trigger - Command trigger
+     */
+    removeCustomCommand(guildId, trigger) {
+        const guildSettings = this.getGuildSettings(guildId);
+        delete guildSettings.customCommands[trigger];
+        this.setGuildSettings(guildId, guildSettings);
+    }
+    
+    /**
+     * Get custom command
+     * @param {string} guildId - Discord guild ID
+     * @param {string} trigger - Command trigger
+     * @returns {Object|null} Custom command data
+     */
+    getCustomCommand(guildId, trigger) {
+        const guildSettings = this.getGuildSettings(guildId);
+        return guildSettings.customCommands[trigger] || null;
+    }
+    
+    // ============================================
+    // Statistics & Analytics
+    // ============================================
+    
+    /**
+     * Get guild statistics
+     * @param {string} guildId - Discord guild ID
+     * @returns {Object} Statistics
+     */
+    getGuildStats(guildId) {
+        const filePath = path.join(this.settingsDir, `stats_${guildId}.json`);
+        
+        try {
+            if (fs.existsSync(filePath)) {
+                return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            }
+        } catch (error) {
+            console.error(`Error reading guild stats for ${guildId}:`, error);
+        }
+        
+        // Default stats
+        const defaultStats = {
+            commandsUsed: 0,
+            messagesProcessed: 0,
+            usersJoined: 0,
+            usersLeft: 0,
+            warningsGiven: 0,
+            mutesGiven: 0,
+            kicksGiven: 0,
+            bansGiven: 0,
+            ticketsCreated: 0,
+            songsPlayed: 0,
+            economyTransactions: 0,
+            lastUpdated: Date.now()
+        };
+        
+        this.setGuildStats(guildId, defaultStats);
+        return defaultStats;
+    }
+    
+    /**
+     * Update guild statistics
+     * @param {string} guildId - Discord guild ID
+     * @param {Object} stats - Updated statistics
+     */
+    setGuildStats(guildId, stats) {
+        const filePath = path.join(this.settingsDir, `stats_${guildId}.json`);
+        
+        try {
+            stats.lastUpdated = Date.now();
+            fs.writeFileSync(filePath, JSON.stringify(stats, null, 2));
+        } catch (error) {
+            console.error(`Error saving guild stats for ${guildId}:`, error);
+        }
+    }
+    
+    /**
+     * Increment a guild statistic
+     * @param {string} guildId - Discord guild ID
+     * @param {string} statName - Statistic name
+     * @param {number} amount - Amount to increment
+     */
+    incrementGuildStat(guildId, statName, amount = 1) {
+        const stats = this.getGuildStats(guildId);
+        
+        if (typeof stats[statName] === 'number') {
+            stats[statName] += amount;
+            this.setGuildStats(guildId, stats);
+        }
+    }
+    
+    // ============================================
+    // Utility Methods
+    // ============================================
+    
+    /**
+     * Export all settings for a guild
+     * @param {string} guildId - Discord guild ID
+     * @returns {Object} Complete guild data
+     */
+    exportGuildData(guildId) {
+        return {
+            settings: this.getGuildSettings(guildId),
+            stats: this.getGuildStats(guildId),
+            exportDate: Date.now(),
+            version: '2.5.0'
+        };
+    }
+    
+    /**
+     * Import guild data
+     * @param {string} guildId - Discord guild ID
+     * @param {Object} data - Guild data to import
+     */
+    importGuildData(guildId, data) {
+        if (data.settings) {
+            this.setGuildSettings(guildId, data.settings);
+        }
+        if (data.stats) {
+            this.setGuildStats(guildId, data.stats);
+        }
+    }
+    
+    /**
+     * Clean up old/unused settings files
+     * @param {Array} activeGuildIds - Array of active guild IDs
+     */
+    cleanupOldFiles(activeGuildIds = []) {
+        try {
+            const files = fs.readdirSync(this.settingsDir);
+            
+            for (const file of files) {
+                if (file.startsWith('guild_')) {
+                    const guildId = file.replace('guild_', '').replace('.json', '');
+                    
+                    // Remove settings for guilds the bot is no longer in
+                    if (!activeGuildIds.includes(guildId)) {
+                        fs.unlinkSync(path.join(this.settingsDir, file));
+                        
+                        // Also remove stats file if exists
+                        const statsFile = `stats_${guildId}.json`;
+                        if (fs.existsSync(path.join(this.settingsDir, statsFile))) {
+                            fs.unlinkSync(path.join(this.settingsDir, statsFile));
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error cleaning up old files:', error);
+        }
+    }
+}
 
-// Apply environment-specific configuration
-config.applyEnvironmentConfig();
-
-module.exports = config;
+module.exports = SettingsManager;
